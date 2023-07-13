@@ -21,7 +21,7 @@
                             + Crear
                         </button>
                     </form>
-                    <form action="">
+                    <form action="/logout" method="POST">
                         <button type="submit" class="btn btn-secondary">
                             Logout
                         </button>
@@ -50,11 +50,11 @@
                             </td>
                             <td>{{receta.usuario.nombre}} {{receta.usuario.apellido}}</td>
                             <td class="d-flex">
-                                <form>
+                                <form action="/receta/{{receta.id}}" method="POST">
                                     <button type="submit" class="btn btn-primary">Ver receta</button>
                                 </form>
                                 {% if receta.id_usuario==session['id_usuario']: %}
-                                <form>
+                                <form action="/formulario/editar/receta/{{receta.id}}" method="GET">
                                     <button type="submit" class="btn btn-warning">Editar</button>
                                 </form>
                                 <form action="/eliminar/receta/{{receta.id}}" method="POST">

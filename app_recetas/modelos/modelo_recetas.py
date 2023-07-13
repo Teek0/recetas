@@ -14,6 +14,9 @@ class Receta:
         self.id_usuario=data['id_usuario']
         self.creado=data['creado']
         self.editado=data['editado']
+    
+    def fecha_con_formato(self):
+        return "FormatoFecha"
         
     @classmethod
     def crear_uno(cls,data):
@@ -56,6 +59,50 @@ class Receta:
                 WHERE id = %(id)s;
                 """
         return connectToMySQL(BASE_DATOS).query_db(query,data)
+    
+    @classmethod
+    def obtener_uno_con_usuario(cls,data):
+        query = """
+                SELECT *
+                FROM recetas r JOIN usuarios u
+                ON r.id_usuario=u.id
+                WHERE r.id=%(id)s;
+                """
+        resultado= connectToMySQL(BASE_DATOS).query_db(query,data)
+        renglon=resultado[0]
+        receta=Receta(renglon)
+        data_usuario={
+            "id":renglon['u.id'],
+            "nombre":renglon['u.nombre'],
+            "apellido":renglon['apellido'],
+            "email":renglon['email'],
+            "password":renglon['password'],
+            "creado":renglon['u.creado'],
+            "editado":renglon['u.editado'],
+        }
+        receta.usuario=Usuario(data_usuario)
+        return receta
+    
+    @classmethod
+    def obtener_uno(cls,data):
+        query = """
+                SELECT *
+                FROM recetas
+                WHERE id = %(id)s;
+                """
+        resultado = connectToMySQL(BASE_DATOS).query_db(query,data)
+        receta=Receta(resultado[0])
+        return receta
+    
+    @classmethod
+    def editar_uno(cls,data):
+        query = """
+                UPDATE recetas
+                SET nombre = %(nombre)s, descripcion= %(descripcion)s, instrucciones= %(instrucciones)s, fecha_cocinado= %(fecha_cocinado)s, menos_de_treinta= %(menos_de_treinta)s
+                WHERE id= %(id)s
+                """
+        return connectToMySQL(BASE_DATOS).query_db(query,data)
+
 
     @staticmethod
     def validar_formulario_recetas(data):

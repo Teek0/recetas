@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title> Nueva Recetas </title>
+        <title> Editar Receta </title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     </head>
     <body>
@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col-8">
                     <h1>
-                        Agregar nueva receta!
+                        Edita tu receta!
                     </h1>
                 </div>
                 <div class="col-4 d-flex">
@@ -27,12 +27,12 @@
                     </form>
                 </div>
                 <div class="row">
-                    <form action="/crear/receta" method="POST">
+                    <form action="/editar/receta/{{receta.id}}" method="POST">
                         <div class="mb-3">
                             <label for="nombre">
                                 Nombre:
                             </label>
-                            <input class="form-control mb-3" type="text" id="nombre" name="nombre">
+                            <input class="form-control mb-3" type="text" id="nombre" name="nombre" value="{{receta.nombre}}">
                             {% for mensaje in get_flashed_messages( category_filter = ['error_nombre'] ): %}
                             <div class="alert alert-danger">
                                 {{mensaje}}
@@ -43,7 +43,7 @@
                             <label for="descripcion">
                                 Descripción:
                             </label>
-                            <textarea class="form-control mb-3" id="descripcion" name="descripcion"></textarea>
+                            <textarea class="form-control mb-3" id="descripcion" name="descripcion">{{receta.descripcion}}</textarea>
                             {% for mensaje in get_flashed_messages( category_filter = ['error_descripcion'] ): %}
                             <div class="alert alert-danger">
                                 {{mensaje}}
@@ -54,7 +54,7 @@
                             <label for="instrucciones">
                                 Instrucciones:
                             </label>
-                            <textarea class="form-control mb-3" id="instrucciones" name="instrucciones"></textarea>
+                            <textarea class="form-control mb-3" id="instrucciones" name="instrucciones">{{receta.instrucciones}}</textarea>
                             {% for mensaje in get_flashed_messages( category_filter = ['error_instrucciones'] ): %}
                             <div class="alert alert-danger">
                                 {{mensaje}}
@@ -65,7 +65,7 @@
                             <label for="fecha_cocinado">
                                 Fecha de elaboración:
                             </label>
-                            <input class="form-control mb-3" type="date" id="fecha_cocinado" name="fecha_cocinado">
+                            <input class="form-control mb-3" type="date" id="fecha_cocinado" name="fecha_cocinado" >
                             {% for mensaje in get_flashed_messages( category_filter = ['error_fecha_cocinado'] ): %}
                             <div class="alert alert-danger">
                                 {{mensaje}}
@@ -79,18 +79,18 @@
                             <label for="tiempo_si">
                                 Si
                             </label>
-                            <input class="mb-3" type="radio" id="tiempo_si" value="1" name="menos_de_treinta">
+                            <input class="mb-3" {% if receta.menos_de_treinta==1: %} checked {% endif %} type="radio" id="tiempo_si" value="1" name="menos_de_treinta">
                             <label for="tiempo_no">
                                 No
                             </label>
-                            <input class="mb-3" type="radio" id="tiempo_no" value="0" name="menos_de_treinta">
+                            <input class="mb-3" {% if receta.menos_de_treinta==0: %} checked {% endif %} type="radio" id="tiempo_no" value="0" name="menos_de_treinta">
                             {% for mensaje in get_flashed_messages( category_filter = ['error_menos_de_treinta'] ): %}
                             <div class="alert alert-danger">
                                 {{mensaje}}
                             </div>
                             {% endfor %}
                         </div>
-                        <button type="submit" class="btn btn-success">Crear receta</button>
+                        <button type="submit" class="btn btn-success">Editar receta</button>
                     </form>
                 </div>
             </div>
