@@ -48,3 +48,8 @@ def procesa_login():
             session['apellido']=usuario_existe.apellido
             session['id_usuario']=usuario_existe.id
             return redirect('/recetas')
+
+@app.route('/logout', methods=['POST'])
+def haz_logout():
+    session.clear()
+    return redirect('/')

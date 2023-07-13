@@ -2,6 +2,7 @@ from app_recetas.config.mysqlconnection import connectToMySQL
 from app_recetas.modelos.modelo_usuarios import Usuario
 from app_recetas import BASE_DATOS
 from flask import flash
+import datetime
 
 class Receta:
     def __init__(self, data):
@@ -16,7 +17,8 @@ class Receta:
         self.editado=data['editado']
     
     def fecha_con_formato(self):
-        return "FormatoFecha"
+        fecha_formateada = self.fecha_cocinado.strftime("%d %B, %Y").lstrip("0")
+        return fecha_formateada
         
     @classmethod
     def crear_uno(cls,data):
@@ -28,7 +30,7 @@ class Receta:
         return id_receta
     
     @classmethod
-    def obtener_todas_con_usuario(cls,data):
+    def obtener_todas_con_usuario(cls):
         query = """
                 SELECT *
                 FROM recetas r JOIN usuarios u

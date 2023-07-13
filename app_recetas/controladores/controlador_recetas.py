@@ -4,13 +4,19 @@ from app_recetas import app
 
 @app.route('/recetas', methods=['GET'])
 def desplegar_recetas():
-    #obtener las recetas y enviar la lista de recetas al template
-    lista_recetas=Receta.obtener_todas_con_usuario()
-    return render_template('recetas.html',lista_recetas=lista_recetas)
+    if "id_usuario" not in session:
+        return redirect('/')
+    else:
+        #obtener las recetas y enviar la lista de recetas al template
+        lista_recetas=Receta.obtener_todas_con_usuario()
+        return render_template('recetas.html',lista_recetas=lista_recetas)
 
 @app.route('/formulario/receta', methods=["GET"])
 def desplegar_formulario_receta():
-    return render_template('formulario_receta.html')
+    if "id_usuario" not in session:
+        return redirect('/')
+    else:
+        return render_template('formulario_receta.html')
 
 @app.route('/crear/receta', methods=['POST'])
 def nueva_receta():
@@ -33,21 +39,27 @@ def eliminar_receta(id):
     Receta.elimina_uno(data)
     return redirect('/recetas')
 
-@app.route('/receta/<int:id>', methods=['GET'])
+@app.route('/receta/<int:id>', methods=['POST'])
 def desplegar_receta(id):
-    data={
-        "id":id
-    }
-    receta=Receta.obtener_uno_con_usuario(data)
-    return render_template('receta.html', receta=receta)
+    if "id_usuario" not in session:
+        return redirect('/')
+    else:
+        data={
+            "id":id
+        }
+        receta=Receta.obtener_uno_con_usuario(data)
+        return render_template('receta.html', receta=receta)
 
 @app.route('/formulario/editar/receta/<int:id>', methods=['GET'])
 def desplegar_editar_receta(id):
-    data={
-        "id":id
-    }
-    receta=Receta.obtener_uno(data)
-    return render_template('editar_receta.html', receta=receta)
+    if "id_usuario" not in session:
+        return redirect('/')
+    else:
+        data={
+            "id":id
+        }
+        receta=Receta.obtener_uno(data)
+        return render_template('editar_receta.html', receta=receta)
 
 @app.route('/editar/receta/<int:id>', methods=['POST'])
 def editar_receta(id):
